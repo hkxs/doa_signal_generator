@@ -18,10 +18,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import numpy as np
-import numpy.typing as npt
 import matplotlib.pyplot as plt
 
+from doa_signal_generator.arrays.ula import UniformLinealArray
 
 def gen_complex_tone(frequency: float, num_samples: int, sample_rate: float) -> npt.NDArray:
     """
@@ -45,7 +44,7 @@ def gen_complex_tone(frequency: float, num_samples: int, sample_rate: float) -> 
     return np.exp(2j * np.pi * frequency * t)
 
 
-def gen_steering_vector(angle_degrees: float, element_spacing: float, num_elements: int) -> npt.NDArray:
+def gen_ula_steering_vector(angle_degrees: float, element_spacing: float, num_elements: int) -> npt.NDArray:
     """
     Generate a steering vector for a uniform linear array
 
@@ -64,7 +63,7 @@ def gen_steering_vector(angle_degrees: float, element_spacing: float, num_elemen
         The generating steering vector
     """
     theta = np.pi * angle_degrees / 180
-    return np.exp(-2j * np.pi * element_spacing * np.arange(num_elements) * np.sin(theta))
+    return np.exp(-2j * np.pi * element_spacing * np.arange(num_elements) * np.cos(theta))
 
 
 def apply_steering_vector(signal: npt.NDArray, steering_vector: npt.NDArray) -> npt.NDArray:
@@ -88,7 +87,8 @@ def apply_steering_vector(signal: npt.NDArray, steering_vector: npt.NDArray) -> 
 
 
 signal = gen_complex_tone(frequency=440, num_samples=500, sample_rate=44100)
-a = gen_steering_vector(angle_degrees=20, element_spacing=0.5, num_elements=4)
+ula = UniformLinealArray(4, 0.5)
+a = ula.get_steering_vector(20)
 
 output = apply_steering_vector(signal=signal, steering_vector=a)
 
