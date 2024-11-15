@@ -20,6 +20,9 @@
 
 from abc import ABC, abstractmethod
 
+import numpy.typing as npt
+
+
 class BaseArray(ABC):
 
     def __init__(self, num_elements) -> None:

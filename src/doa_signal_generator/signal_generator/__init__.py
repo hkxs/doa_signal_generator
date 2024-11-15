@@ -18,29 +18,5 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import numpy as np
-import numpy.typing as npt
-from doa_signal_generator.arrays.base_array import BaseArray
-
-
-class UniformLinealArray(BaseArray):
-    def __init__(self, num_elements, element_spacing) -> None:
-        self.spacing = element_spacing
-        super().__init__(num_elements)
-
-    def get_steering_vector(self, angle_degrees: float) -> npt.NDArray:
-        """
-        Generate a steering vector for a uniform linear array
-
-        Parameters
-        ----------
-        angle_degrees: float
-            Angle of arrival in degrees
-
-        Returns
-        -------
-        npt.NDArray
-            The generating steering vector
-        """
-        theta = np.pi * angle_degrees / 180
-        return np.exp(-2j * np.pi * self.spacing * np.arange(self.num_elements) * np.cos(theta))
+from doa_signal_generator.signal_generator.signal_generators import gen_complex_tone
+from doa_signal_generator.signal_generator.signal_generators import gen_sine_tone

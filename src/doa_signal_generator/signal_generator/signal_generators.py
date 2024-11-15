@@ -20,27 +20,47 @@
 
 import numpy as np
 import numpy.typing as npt
-from doa_signal_generator.arrays.base_array import BaseArray
 
 
-class UniformLinealArray(BaseArray):
-    def __init__(self, num_elements, element_spacing) -> None:
-        self.spacing = element_spacing
-        super().__init__(num_elements)
+def gen_complex_tone(frequency: float, num_samples: int, sample_rate: float) -> npt.NDArray:
+    """
+    Generate a complex tone signal
 
-    def get_steering_vector(self, angle_degrees: float) -> npt.NDArray:
-        """
-        Generate a steering vector for a uniform linear array
+    Parameters
+    ----------
+    frequency: float
+        The frequency of the tone
+    num_samples: int
+        Number of samples to generate
+    sample_rate:
+        The sampling frequency
 
-        Parameters
-        ----------
-        angle_degrees: float
-            Angle of arrival in degrees
+    Returns
+    -------
+    npt.NDArray
+        The generated complex signal
+    """
+    t = np.arange(num_samples) / sample_rate
+    return np.exp(2j * np.pi * frequency * t)
 
-        Returns
-        -------
-        npt.NDArray
-            The generating steering vector
-        """
-        theta = np.pi * angle_degrees / 180
-        return np.exp(-2j * np.pi * self.spacing * np.arange(self.num_elements) * np.cos(theta))
+
+def gen_sine_tone(frequency: float, num_samples: int, sample_rate: float) -> npt.NDArray:
+    """
+    Generate a sine wave with a defined frequency
+
+    Parameters
+    ----------
+    frequency: float
+        The frequency of the tone
+    num_samples: int
+        Number of samples to generate
+    sample_rate:
+        The sampling frequency
+
+    Returns
+    -------
+    npt.NDArray
+        The generated complex signal
+    """
+    samples = np.arange(num_samples) / sample_rate
+    return np.sin(2 * np.pi * frequency * samples)
